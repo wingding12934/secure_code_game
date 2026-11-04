@@ -20,10 +20,12 @@ def validorder(order: Order):
     net = 0
 
     for item in order.items:
-        if item.type == 'payment':
-            net += item.amount
+        if item.quantity >= 10:
+            return "Total amount payable for an order exceeded"
+        elif item.type == 'payment':
+            net += int(item.amount)
         elif item.type == 'product':
-            net -= item.amount * item.quantity
+            net -= int(item.amount) * item.quantity
         else:
             return "Invalid item type: %s" % item.type
 
