@@ -11,7 +11,7 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const libxmljs = require("libxmljs");
+const libxmljs = require("libxmljs5");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
@@ -46,10 +46,14 @@ app.post("/ufo", (req, res) => {
   } else if (contentType === "application/xml") {
     try {
       const xmlDoc = libxmljs.parseXml(req.body, {
-        replaceEntities: true,
-        recover: true,
-        nonet: false,
+        replaceEntities: false,
+        recover: false,
+        nonet: true,
       });
+
+      if (typeof req.body !== 'string' || /<!DOCTYPE|<!ENTITY/i.test(req.body)) {
+        return res.status(400).json({ error: 'Invalid XML: DTD and entities are not allowed' });
+      }
 
       console.log("Received XML data from XMLon:", xmlDoc.toString());
 

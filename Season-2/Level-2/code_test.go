@@ -127,7 +127,7 @@ func TestMain(m *testing.M) {
 		main()
 	}()
 
-	time.Sleep(500 * time.Millisecond)
+	time.Sleep(100 * time.Millisecond)
 
 	exitCode := m.Run()
 	os.Exit(exitCode)

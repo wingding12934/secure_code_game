@@ -3,6 +3,7 @@
 // This is the last level of this season, good luck!
 
 var CryptoAPI = (function() {
+	function round(H, w) {}
 	var encoding = {
 		a2b: function(a) { },
 		b2a: function(b) { }
@@ -15,6 +16,8 @@ var CryptoAPI = (function() {
 			size: 20,
 			block: 64,
 			hash: function(s) {
+				// hack-1.js remove 
+				if (typeof s !== 'string') throw new Error('expected string');
 				var len = (s += '\x80').length,
 					blocks = len >> 6,
 					chunk = len & 63,
@@ -22,7 +25,7 @@ var CryptoAPI = (function() {
 					i = 0,
 					j = 0,
 					H = [0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476, 0xC3D2E1F0],
-					w = [];
+					w = new Uint32Array(16);
 					
 				while (chunk++ != 56) {
 					s += "\x00";
@@ -42,15 +45,16 @@ var CryptoAPI = (function() {
 						w[(i >> 2) & 15] = j;
 						j = 0;
 					}
-					if ((i & 63) == 63) CryptoAPI.sha1._round(H, w);
+					if ((i & 63) == 63) round(H, w);
 				}
 				
 				for (i = 0; i < H.length; i++)
 					for (j = 3; j >= 0; j--)
 						res += encoding.b2a(H[i] >> (8 * j) & 255);
 				return res;
+				// removed _round for hack2-js
 			}, // End "hash"
-			_round: function(H, w) { }
+			
 		} // End "sha1"
 	}; // End "API"
 
