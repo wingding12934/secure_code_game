@@ -64,8 +64,8 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 		if !isValidEmail(email) {
 			// Fix: Removing the email from the log
-			// log.Printf("Invalid email format: %q", email)
-			log.Printf("Invalid email format")
+			log.Printf("Invalid email format: %q", email)
+			//log.Printf("Invalid email format")
 			http.Error(w, "Invalid email format", http.StatusBadRequest)
 			return
 		}
